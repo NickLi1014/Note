@@ -1,2 +1,0 @@
-# Note
-For writing notes

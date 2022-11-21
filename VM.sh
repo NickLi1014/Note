@@ -1,4 +1,5 @@
 #!/bin/bash
+#nick create
 RED='\033[0;31m'
 NC='\033[0m' #No Color
 Yellow='\033[33m'

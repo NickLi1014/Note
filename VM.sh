@@ -114,10 +114,10 @@ nmcli con up eth0 >/dev/null
 echo -e "\033[33minput your eth1 ip : \033[0m" && read -e ip
 check_ip
 echo -e "\033[33minput your mask ex(24) : \033[0m" && read -e mask
-echo -e "\033[33minput your GW : \033[0m" && read -e gw
-echo -e "\033[33minput your DNS : \033[0m" && read -e dns
-echo -e "\033[35m------eth1------\nip  :$ip \nGW  :$gw\nDNS :$dns \033[0m"
-nmcli con modify eth1 ipv4.addresses $ip1/$mask ipv4.gateway $gw ipv4.dns $dns ipv4.method manual
+#echo -e "\033[33minput your GW : \033[0m" && read -e gw
+#echo -e "\033[33minput your DNS : \033[0m" && read -e dns
+echo -e "\033[35m------eth1------\nip  :$ip \033[0m"
+nmcli con modify eth1 ipv4.addresses $ip1/$mask ipv4.method manual
 nmcli con up eth1 >/dev/null
 else
 echo -e "\033[31mDont have eth0 or eth1 please check NIC \033[0m"

@@ -1,4 +1,5 @@
 #!/bin/bash
+#nick create
 RED='\033[0;31m'
 NC='\033[0m' #No Color
 Yellow='\033[33m'
@@ -11,23 +12,41 @@ case $answer in
     1)
 echo -e "\033[33mYou choose network Y/N: \033[0m" && read -e  a
 
-if [ "$a" == "Y" ]
-then
+if [ "$a" == "Y" ];then
 network
 else
 lobby
 fi
     ;;
     2)
-echo "you select sshd_hosts.deny Y/N:"
+echo -e  "\033[33mYou select sshd_hosts.deny Y/N: \033[0m" && read -e  a
     ;;
     3)
-echo "you select NTP Y/N:"
+echo -e "\033[33mYou select NTP Y/N: \033[0m" && read -e  a
     ;;
     4)
-echo "you select ssh_passwrod Y/N:"
+echo -e "\033[33mYou select ssh_passwrod Y/N: \033[0m" && read -e  a
+if [ "$a" == "Y" ];then
+ssh_passwd
+else
+lobby
+fi
     ;;
 esac
+}
+
+function ssh_passwd (){
+echo -e "\033[33mYou want on/off: \n(1) on\n(2) off\033[0m" && read -e  b
+if [ "$b" == "1" ];then
+sed -i  's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config 
+systemctl restart sshd
+elif [ "$b" == "2" ];then
+sed -i  's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config 
+systemctl restart sshd
+else
+echo -e "\033[33mSomething wrong"
+fi
+
 }
 
 function check_ip (){
@@ -95,10 +114,10 @@ nmcli con up eth0 >/dev/null
 echo -e "\033[33minput your eth1 ip : \033[0m" && read -e ip
 check_ip
 echo -e "\033[33minput your mask ex(24) : \033[0m" && read -e mask
-echo -e "\033[33minput your GW : \033[0m" && read -e gw
-echo -e "\033[33minput your DNS : \033[0m" && read -e dns
-echo -e "\033[35m------eth1------\nip  :$ip \nGW  :$gw\nDNS :$dns \033[0m"
-nmcli con modify eth1 ipv4.addresses $ip1/$mask ipv4.gateway $gw ipv4.dns $dns ipv4.method manual
+#echo -e "\033[33minput your GW : \033[0m" && read -e gw
+#echo -e "\033[33minput your DNS : \033[0m" && read -e dns
+echo -e "\033[35m------eth1------\nip  :$ip \033[0m"
+nmcli con modify eth1 ipv4.addresses $ip1/$mask ipv4.method manual
 nmcli con up eth1 >/dev/null
 else
 echo -e "\033[31mDont have eth0 or eth1 please check NIC \033[0m"

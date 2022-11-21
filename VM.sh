@@ -11,23 +11,41 @@ case $answer in
     1)
 echo -e "\033[33mYou choose network Y/N: \033[0m" && read -e  a
 
-if [ "$a" == "Y" ]
-then
+if [ "$a" == "Y" ];then
 network
 else
 lobby
 fi
     ;;
     2)
-echo "you select sshd_hosts.deny Y/N:"
+echo -e  "\033[33mYou select sshd_hosts.deny Y/N: \033[0m" && read -e  a
     ;;
     3)
-echo "you select NTP Y/N:"
+echo -e "\033[33mYou select NTP Y/N: \033[0m" && read -e  a
     ;;
     4)
-echo "you select ssh_passwrod Y/N:"
+echo -e "\033[33mYou select ssh_passwrod Y/N: \033[0m" && read -e  a
+if [ "$a" == "Y" ];then
+ssh_passwd
+else
+lobby
+fi
     ;;
 esac
+}
+
+function ssh_passwd (){
+echo -e "\033[33mYou want on/off: \n(1) on\n(2) off\033[0m" && read -e  b
+if [ "$b" == "1" ];then
+sed -i  's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config 
+systemctl restart sshd
+elif [ "$b" == "2" ];then
+sed -i  's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config 
+systemctl restart sshd
+else
+echo -e "\033[33mSomething wrong"
+fi
+
 }
 
 function check_ip (){
